@@ -1,0 +1,28 @@
+nav {
+    margin-bottom: 20px;
+}
+
+input {
+    margin-bottom: 20px;
+}
+
+#div-rd {
+    padding-top: 20px;
+}
+
+#labelRd1 {
+    margin-right: 20px;
+}
+
+.form-control {
+    width: 50%;
+}
+
+textarea {
+    resize: none;
+    height: 10em;
+}
+
+button {
+    margin-top: 20px;
+}

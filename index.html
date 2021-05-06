@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>ONG Ayuda a un peludo</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            document.getElementById("flexRadioDefault1")
+                .addEventListener("click", function() {
+                    document.getElementById("div-rut").hidden = false;
+                    document.getElementById("div-pasap").hidden = true;
+                })
+
+            document.getElementById("flexRadioDefault2")
+                .addEventListener("click", function() {
+                    document.getElementById("div-rut").hidden = true;
+                    document.getElementById("div-pasap").hidden = false;
+                })
+
+            $("#form1").validate({
+                rules: {
+                    nombre: {
+                        required: true
+
+
+                    },
+                    email: {
+                        required: true,
+                        email: true
+
+                    },
+                    fono: {
+                        required: false,
+                        number: true
+
+                    },
+                    ciudad: {
+                        required: true
+
+                    },
+                    coment: {
+                        required: true,
+                        minlenght: 50
+                    }
+                },
+                messages: {
+                    nombre: {
+                        required: "Por favor ingrese su nombre"
+
+                    },
+                    email: {
+                        required: "Por favor ingrese su correo",
+                        email: "El correo debe tener el siguiente formato: abc@ejemplo.cl"
+
+                    },
+                    fono: {
+                        number: "Ingrese solo numeros"
+                    },
+                    ciudad: {
+                        required: "Por favor ingrese una ciudad"
+
+                    },
+                    coment: {
+                        required: "Por favor redacte su motivacion",
+                        minlenght: "Debe ingresar al menos 50 caracteres"
+                    },
+                }
+            });
+
+        });
+
+        var Fn = {
+            // Valida el rut con su cadena completa "XXXXXXXX-X"
+            validaRut: function(rutCompleto) {
+                rutCompleto = rutCompleto.replace("‐", "-");
+                if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutCompleto))
+                    return false;
+                var tmp = rutCompleto.split('-');
+                var digv = tmp[1];
+                var rut = tmp[0];
+                if (digv == 'K') digv = 'k';
+
+                return (Fn.dv(rut) == digv);
+            },
+            dv: function(T) {
+                var M = 0,
+                    S = 1;
+                for (; T; T = Math.floor(T / 10))
+                    S = (S + T % 10 * (9 - M++ % 6)) % 11;
+                return S ? S - 1 : 'k';
+            }
+        }
+
+
+        $("#btn-enviar").click(function() {
+            if (Fn.validaRut($("#rut").val())) {
+                $("#msgerror").html("El rut ingresado es válido :D");
+            } else {
+                $("#msgerror").html("El Rut no es válido :'c ");
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <nav class="py-2 bg-light border-bottom">
+        <div class="container d-flex flex-wrap">
+            <ul class="nav me-auto">
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2 active" aria-current="page">Home</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Features</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Pricing</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">FAQs</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">About</a></li>
+            </ul>
+            <ul class="nav">
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Login</a></li>
+                <li class="nav-item"><a href="#" class="nav-link link-dark px-2">Sign up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <form id="form1" action="">
+            <div class="mb-3">
+
+                <label for="nombre" class="form-label">Nombre <span>(Completo)</span></label>
+                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                <div class="div"></div>
+
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                <div class="div"></div>
+
+                <div class="div" id="div-rd">
+
+                    <h5>Selecciona con que documento te registraras</h5>
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                    <label class="form-check-label" for="flexRadioDefault1" id="labelRd1">
+                      Rut
+                    </label>
+
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                      Pasaporte
+                    </label>
+
+                    <div class="container" id="div-rut">
+                        <label for="rut" class="form-label">Rut</label>
+                        <input type="text" class="form-control" id="rut" name="rut" required>
+                        <p id="msgerror"></p>
+                    </div>
+
+                    <div class="container" id="div-pasap" hidden>
+                        <label for="pasap" class="form-label">N° Pasaporte</label>
+                        <input type="number" class="form-control" id="pasap" name="pasap">
+                    </div>
+                </div>
+
+
+                <label for="fono" class="form-label">Telefono <span>(Opcional*)</span></label>
+                <input type="text" class="form-control" id="fono" name="fono">
+                <div class="div"></div>
+
+
+
+                <label for="ciudad" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="ciudad" name="ciudad">
+                <div class="div"></div>
+
+                <label for="coment" class="form-label">Tu motivo para unirte <span>(Min. 50 Carácteres)</span></label>
+                <textarea class="form-control" placeholder="Escribenos tu motivacion " name="coment" id="coment"></textarea>
+                <div class="div"></div>
+
+                <button type="submit" class="btn btn-primary" id="btn-enviar">Enviar</button>
+                <button class="btn btn-primary" type="reset">Limpiar</button>
+            </div>
+
+
+        </form>
+
+    </div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>
